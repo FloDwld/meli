@@ -24,7 +24,7 @@ export async function generateConfig(): Promise<Caddy.Root> {
     logging: {
       logs: {
         default: {
-          level: 'DEBUG',
+          level: 'WARN',
         },
       },
     },
