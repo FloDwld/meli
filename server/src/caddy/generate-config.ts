@@ -52,15 +52,19 @@ export async function generateConfig(): Promise<Caddy.Root> {
       },
       tls: sslEnabled ? {
         automation: {
-          policies: [
-            ...(!env.MELI_ACME_SERVER ? [] : [{
-              issuer: {
-                module: 'acme' as const,
-                ca: env.MELI_ACME_SERVER,
-                trusted_roots_pem_files: env.MELI_ACME_CA_PATH ? [env.MELI_ACME_CA_PATH] : undefined,
-              },
-              on_demand: true,
-            }]),
+          policies: [{
+              issuers: [{
+                module: 'acme',
+                challenges: {
+                  dns: {
+                    provider: {
+                      name: 'route53',
+                      max_retries: 3,
+                    }
+                  }
+                }
+              }]
+            }
           ],
         },
         certificates: generateManualCertificatesConfig(sites),
