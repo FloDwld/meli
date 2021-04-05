@@ -3,6 +3,6 @@ declare namespace Caddy {
     '@id'?: string;
     http?: Http;
     pki?: Pki;
-    tls?: Tls;
+    tls?: any;
   }
 }
