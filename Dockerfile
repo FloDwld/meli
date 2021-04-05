@@ -1,3 +1,9 @@
+# Build caddy with route53 support
+FROM caddy:2.3.0-builder as caddy-builder
+
+RUN xcaddy build --with github.com/caddy-dns/route53
+
+
 FROM alpine:3.13
 
 LABEL maintainer="meli.sh"
@@ -11,6 +17,7 @@ COPY ./docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 # caddy
 COPY ./docker/caddy-config.json /etc/caddy/config.json
+COPY --from=caddy-builder /usr/bin/caddy /usr/sbin/caddy
 # ui
 COPY ./ui/build /app/ui
 # server
